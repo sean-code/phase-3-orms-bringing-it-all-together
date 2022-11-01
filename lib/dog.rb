@@ -61,25 +61,33 @@ class Dog
             new_dog
         end
 
-        # def self.all
+        def self.all
+            sql_all = <<-SQL
 
-        #     sql = <<-SQL
+            SELECT * FROM dogs;
+            SQL
+            DB[:conn].execute(sql)
+        end
 
-        #     SELECT * FROM dogs;
-        #     SQL
-        #     DB[:conn].execute(sql)
-
-
-        # end
-
-        def self.find_by_name (name)
-            sql_y = <<-SQL
+        def self.find_by_name(name)
+            sql_name = <<-SQL
               SELECT *
               FROM dogs
               WHERE name = ?
             SQL
-            attributes = DB[:conn].execute(sql_y, name).flatten
+            attributes = DB[:conn].execute(sql_name, name).flatten
             new_from_db(attributes)
         end
-        
+
+        def self.find(id)
+            sql_id = <<-SQL
+              SELECT *
+              FROM dogs
+              WHERE id = ?
+            SQL
+            attributes = DB[:conn].execute(sql_id, id).flatten
+            new_from_db(attributes)
+        end
+
+
 end
