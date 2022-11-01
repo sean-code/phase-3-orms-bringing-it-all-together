@@ -63,10 +63,11 @@ class Dog
 
         def self.all
             sql_all = <<-SQL
-
-            SELECT * FROM dogs;
+            SELECT * FROM dogs
+            WHERE id = ?, name = ?, breed = ?
+            ;
             SQL
-            DB[:conn].execute(sql)
+            DB[:conn].execute(sql_all, id, name, breed)
         end
 
         def self.find_by_name(name)
@@ -89,5 +90,13 @@ class Dog
             new_from_db(attributes)
         end
 
+        # Bonus - Update
 
+        def update
+            sql_update = <<-SQL
+              UPDATE dogs SET name = ?, breed = ?
+              WHERE id = #{id}
+            SQL
+            DB[:conn].execute(sql_update, name, breed)
+          end
 end
