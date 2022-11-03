@@ -64,10 +64,10 @@ class Dog
         def self.all
             sql_all = <<-SQL
             SELECT * FROM dogs
-            WHERE id = ?, name = ?, breed = ?
-            ;
             SQL
-            DB[:conn].execute(sql_all, id, name, breed)
+            DB[:conn].execute(sql_all).collect do |row|
+              self.new_from_db(row)
+            end
         end
 
         def self.find_by_name(name)
